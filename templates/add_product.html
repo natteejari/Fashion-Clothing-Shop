@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8">
+    <title>เพิ่มสินค้า</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 20px; }
+      label { display: block; margin-top: 10px; }
+      input, select { width: 300px; padding: 6px; }
+      button { margin-top: 15px; padding: 8px 12px; }
+      .error { color: red; }
+    </style>
+  </head>
+  <body>
+    <h1>เพิ่มสินค้า</h1>
+    <a href="{{ url_for('product_list') }}">กลับหน้ารายการสินค้า</a>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="error">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
+    <form method="post">
+      <label>ชื่อสินค้า</label>
+      <input type="text" name="name" required>
+
+      <label>URL รูปภาพ</label>
+      <input type="text" name="image_url" placeholder="http://example.com/image.jpg">
+
+      <label>ราคา</label>
+      <input type="number" name="price" step="0.01" required>
+
+      <label>ไซส์</label>
+      <input type="text" name="size" placeholder="S, M, L">
+
+      <label>จำนวน stock</label>
+      <input type="number" name="stock" required>
+
+      <label>หมวดหมู่</label>
+      <select name="category_id">
+        <option value="">เลือกหมวดหมู่</option>
+        {% for category in categories %}
+          <option value="{{ category['id'] }}">{{ category['name'] }}</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit">เพิ่มสินค้า</button>
+    </form>
+  </body>
+</html>

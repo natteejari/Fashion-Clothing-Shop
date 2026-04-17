@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8">
+    <title>แก้ไขสินค้า</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 20px; }
+      label { display: block; margin-top: 10px; }
+      input, select { width: 300px; padding: 6px; }
+      button { margin-top: 15px; padding: 8px 12px; }
+      .error { color: red; }
+    </style>
+  </head>
+  <body>
+    <h1>แก้ไขสินค้า</h1>
+    <a href="{{ url_for('product_list') }}">กลับหน้ารายการสินค้า</a>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="error">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
+    <form method="post">
+      <label>ชื่อสินค้า</label>
+      <input type="text" name="name" value="{{ product['name'] }}" required>
+
+      <label>URL รูปภาพ</label>
+      <input type="text" name="image_url" value="{{ product['image_url'] }}">
+
+      <label>ราคา</label>
+      <input type="number" name="price" step="0.01" value="{{ product['price'] }}" required>
+
+      <label>ไซส์</label>
+      <input type="text" name="size" value="{{ product['size'] }}">
+
+      <label>จำนวน stock</label>
+      <input type="number" name="stock" value="{{ product['stock'] }}" required>
+
+      <label>หมวดหมู่</label>
+      <select name="category_id">
+        <option value="">เลือกหมวดหมู่</option>
+        {% for category in categories %}
+          <option value="{{ category['id'] }}" {% if category['id'] == product['category_id'] %}selected{% endif %}>{{ category['name'] }}</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit">บันทึกการแก้ไข</button>
+    </form>
+  </body>
+</html>
